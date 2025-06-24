@@ -134,7 +134,7 @@ function App() {
           {/* Add other routes here */}
           <Route path="*" element={<Navigate to="/" replace />} /> {/* Fallback for unknown paths */}
         </Routes>
-      </main>
+      </div>
     </>
   );
 }
