@@ -31,6 +31,9 @@ const Navbar = () => {
                 <Link to="/business/campaigns/new" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
                   Create Campaign
                 </Link>
+                <Link to="/business/find-influencers" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
+                  Find Influencers
+                </Link>
               )}
               <Link to="/profile" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
                 Profile

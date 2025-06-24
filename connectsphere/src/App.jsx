@@ -14,8 +14,9 @@ import BusinessProfilePage from './pages/BusinessProfilePage';
 import CreateCampaignPage from './pages/CreateCampaignPage';
 import OpportunityMarketplacePage from './pages/OpportunityMarketplacePage';
 import CampaignDetailPage from './pages/CampaignDetailPage';
-import BusinessDashboardPage from './pages/BusinessDashboardPage'; // Import BusinessDashboardPage
-import InfluencerDashboardPage from './pages/InfluencerDashboardPage'; // Import InfluencerDashboardPage
+import BusinessDashboardPage from './pages/BusinessDashboardPage';
+import InfluencerDashboardPage from './pages/InfluencerDashboardPage';
+import InfluencerDiscoveryPage from './pages/InfluencerDiscoveryPage'; // Import InfluencerDiscoveryPage
 
 // const InfluencerDashboard = () => <h1 className="text-2xl p-4">Influencer Dashboard</h1>; // Remove placeholder
 // const BusinessDashboard = () => <h1 className="text-2xl p-4">Business Dashboard</h1>; // Remove placeholder
@@ -111,6 +112,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={['business']}>
                 <CreateCampaignPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/business/find-influencers"
+            element={
+              <ProtectedRoute allowedRoles={['business']}>
+                <InfluencerDiscoveryPage />
               </ProtectedRoute>
             }
           />
