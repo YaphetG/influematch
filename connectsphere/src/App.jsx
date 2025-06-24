@@ -9,12 +9,16 @@ import Navbar from './components/layout/Navbar'; // Import Navbar
 // Placeholder components for dashboards
 // const LandingPage = () => ( ... ) // Removed
 
-import InfluencerProfilePage from './pages/InfluencerProfilePage'; // Import InfluencerProfilePage
-// Placeholder for BusinessProfilePage - will be created in the next step
-// import BusinessProfilePage from './pages/BusinessProfilePage';
+import InfluencerProfilePage from './pages/InfluencerProfilePage';
+import BusinessProfilePage from './pages/BusinessProfilePage';
+import CreateCampaignPage from './pages/CreateCampaignPage';
+import OpportunityMarketplacePage from './pages/OpportunityMarketplacePage';
+import CampaignDetailPage from './pages/CampaignDetailPage';
+import BusinessDashboardPage from './pages/BusinessDashboardPage'; // Import BusinessDashboardPage
+import InfluencerDashboardPage from './pages/InfluencerDashboardPage'; // Import InfluencerDashboardPage
 
-const InfluencerDashboard = () => <h1 className="text-2xl p-4">Influencer Dashboard</h1>;
-const BusinessDashboard = () => <h1 className="text-2xl p-4">Business Dashboard</h1>;
+// const InfluencerDashboard = () => <h1 className="text-2xl p-4">Influencer Dashboard</h1>; // Remove placeholder
+// const BusinessDashboard = () => <h1 className="text-2xl p-4">Business Dashboard</h1>; // Remove placeholder
 
 // This component will decide which profile page to show
 const ProfilePageRouter = () => {
@@ -24,8 +28,7 @@ const ProfilePageRouter = () => {
   if (currentUser.role === 'influencer') {
     return <InfluencerProfilePage />;
   } else if (currentUser.role === 'business') {
-    // return <BusinessProfilePage />; // Uncomment when BusinessProfilePage is ready
-    return <div className="p-6">Business Profile Page (Coming Soon)</div>; // Placeholder
+    return <BusinessProfilePage />; // Use the imported BusinessProfilePage
   }
   return <div className="p-6">Unknown user role. Cannot display profile.</div>;
 };
@@ -82,7 +85,7 @@ function App() {
             path="/influencer/dashboard"
             element={
               <ProtectedRoute allowedRoles={['influencer']}>
-                <InfluencerDashboard />
+                <InfluencerDashboardPage />
               </ProtectedRoute>
             }
           />
@@ -90,7 +93,7 @@ function App() {
             path="/business/dashboard"
             element={
               <ProtectedRoute allowedRoles={['business']}>
-                <BusinessDashboard />
+                <BusinessDashboardPage />
               </ProtectedRoute>
             }
           />
@@ -100,6 +103,30 @@ function App() {
               <ProtectedRoute>
                 {/* No specific role, just needs login */}
                 <UserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/business/campaigns/new"
+            element={
+              <ProtectedRoute allowedRoles={['business']}>
+                <CreateCampaignPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/influencer/opportunities"
+            element={
+              <ProtectedRoute allowedRoles={['influencer']}>
+                <OpportunityMarketplacePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/campaigns/:campaignId"
+            element={
+              <ProtectedRoute> {/* Protects so only logged-in users can see */}
+                <CampaignDetailPage />
               </ProtectedRoute>
             }
           />

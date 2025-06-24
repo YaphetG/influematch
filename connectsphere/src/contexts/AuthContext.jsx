@@ -16,8 +16,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/firebase.User
         const userDocRef = doc(db, "users", user.uid);
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
@@ -28,44 +26,32 @@ export const AuthProvider = ({ children }) => {
             displayName: userData.displayName,
             role: userData.role,
             profileImageUrl: userData.profileImageUrl
-            // Add any other essential user details you store in the 'users' doc
           });
         } else {
-          // This might happen if a user exists in Auth but not in Firestore (e.g., incomplete signup)
-          // Or if the user was deleted from Firestore but not Auth.
           console.warn("User document not found in Firestore for UID:", user.uid);
-          setCurrentUser(null); // Treat as not fully logged in or handle appropriately
+          setCurrentUser(null);
         }
       } else {
-        // User is signed out
         setCurrentUser(null);
       }
       setLoadingAuth(false);
     });
-
-    // Cleanup subscription on unmount
     return unsubscribe;
   }, []);
 
-  const value = {
-    currentUser,
-    setCurrentUser, // Potentially for manual updates if needed, though onAuthStateChanged is primary
-    loadingAuth
-  };
-
+  // Define logout function
   const logout = () => {
     return auth.signOut();
   };
 
+  // Define value object ONCE, including logout
   const value = {
     currentUser,
-    setCurrentUser, // Potentially for manual updates if needed
+    setCurrentUser,
     loadingAuth,
-    logout // Add logout function to context
+    logout // Include logout here
   };
 
-  // Don't render children until auth state is determined to prevent flicker
-  // or rendering protected content prematurely.
   return (
     <AuthContext.Provider value={value}>
       {!loadingAuth && children}

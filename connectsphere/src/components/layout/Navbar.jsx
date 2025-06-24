@@ -15,13 +15,21 @@ const Navbar = () => {
           {currentUser ? (
             <>
               {currentUser.role === 'influencer' && (
-                <Link to="/influencer/dashboard" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
-                  Dashboard
-                </Link>
+                <>
+                  <Link to="/influencer/dashboard" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
+                    Dashboard
+                  </Link>
+                  <Link to="/influencer/opportunities" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
+                    Find Opportunities
+                  </Link>
+                </>
               )}
               {currentUser.role === 'business' && (
                 <Link to="/business/dashboard" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
                   Dashboard
+                </Link>
+                <Link to="/business/campaigns/new" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
+                  Create Campaign
                 </Link>
               )}
               <Link to="/profile" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
