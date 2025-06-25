@@ -8,8 +8,10 @@ const InfluencerCard = ({ influencer }) => {
     profileImageUrl,
     niche,
     bio,
-    // socialLinks, // Could be used to display icons or links
-    // rateCard, // Probably too much detail for a card view
+    location,         // New field
+    audienceSize,     // New field
+    // socialLinks,
+    // rateCard,
   } = influencer;
 
   const placeholderImage = `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName || 'Connect Sphere')}&background=random&color=fff&size=128`;
@@ -30,6 +32,18 @@ const InfluencerCard = ({ influencer }) => {
             {niche}
           </p>
         )}
+        <div className="mt-3 space-y-1 text-xs text-gray-500 text-center">
+          {location && (
+            <p>
+              <span className="font-semibold">Location:</span> {location}
+            </p>
+          )}
+          {audienceSize !== null && audienceSize !== undefined && audienceSize > 0 && ( // Check for actual value greater than 0
+            <p>
+              <span className="font-semibold">Audience:</span> {audienceSize.toLocaleString()}
+            </p>
+          )}
+        </div>
         {bio && (
           <p className="text-gray-600 text-sm mt-3 text-center line-clamp-3 leading-relaxed">
             {bio}

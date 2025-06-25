@@ -24,7 +24,7 @@ const Navbar = () => {
                   </Link>
                 </>
               )}
-              {currentUser.role === 'business' && (<>
+              {currentUser.role === 'business' && (
                 <Link to="/business/dashboard" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
                   Dashboard
                 </Link>
@@ -34,7 +34,6 @@ const Navbar = () => {
                 <Link to="/business/find-influencers" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
                   Find Influencers
                 </Link>
-                </>
               )}
               <Link to="/profile" className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">
                 Profile

@@ -9,7 +9,9 @@ const InfluencerProfilePage = () => {
     niche: '',
     bio: '',
     socialLinks: { youtube: '', instagram: '', tiktok: '', twitter: '', other: '' },
-    audienceDemographics: { ageRange: '', genderSplit: '', topLocations: '' }, // Simplified for now
+    audienceDemographics: { ageRange: '', genderSplit: '', topLocations: '' }, // Simplified for now - DEPRECATE this in favor of new location/audienceSize
+    location: '', // New field
+    audienceSize: '', // New field (will be stored as number)
     rateCard: [{ service: '', price: '' }],
   });
   const [loading, setLoading] = useState(true);
@@ -39,7 +41,9 @@ const InfluencerProfilePage = () => {
             niche: data.niche || '',
             bio: data.bio || '',
             socialLinks: data.socialLinks || { youtube: '', instagram: '', tiktok: '', twitter: '', other: '' },
-            audienceDemographics: data.audienceDemographics || { ageRange: '', genderSplit: '', topLocations: '' },
+            audienceDemographics: data.audienceDemographics || { ageRange: '', genderSplit: '', topLocations: '' }, // Keep for backward compatibility
+            location: data.location || '', // Load new field
+            audienceSize: data.audienceSize || '', // Load new field
             rateCard: data.rateCard && data.rateCard.length > 0 ? data.rateCard : [{ service: '', price: '' }],
           });
         } else {
@@ -108,15 +112,16 @@ const InfluencerProfilePage = () => {
     setError('');
     setSuccessMessage('');
     try {
-      // Check if document exists to decide between setDoc and updateDoc
-      // For simplicity, using setDoc with merge:true will create or overwrite.
-      // Or, use updateDoc if sure it exists, setDoc if creating.
-      // Since signup should create it, updateDoc is usually fine.
-      // Using set with merge to be safe if it was somehow deleted.
-      await setDoc(profileDocRef(), {
+      const dataToSave = {
         ...profile,
+        audienceSize: profile.audienceSize ? parseInt(profile.audienceSize, 10) : 0, // Ensure it's a number
         updatedAt: Timestamp.fromDate(new Date())
-      }, { merge: true }); // merge:true ensures we don't overwrite fields not in the form
+      };
+      // Remove audienceDemographics if we are fully deprecating it, or ensure it's not accidentally overwritten if empty
+      // For now, it will be saved as per profile state. If empty in form, it will save as empty.
+      // delete dataToSave.audienceDemographics; // Example if we wanted to remove it fully on save
+
+      await setDoc(profileDocRef(), dataToSave, { merge: true });
       setSuccessMessage("Profile updated successfully!");
     } catch (err) {
       console.error("Error updating profile:", err);
@@ -149,6 +154,14 @@ const InfluencerProfilePage = () => {
             <div>
               <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">Bio / About You</label>
               <textarea name="bio" id="bio" rows="4" value={profile.bio} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Tell businesses about yourself, your style, and what you offer."></textarea>
+            </div>
+            <div>
+              <label htmlFor="location" className="block text-sm font-medium text-gray-700 mb-1">Location (e.g., City, Country)</label>
+              <input type="text" name="location" id="location" value={profile.location} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., Los Angeles, USA" />
+            </div>
+            <div>
+              <label htmlFor="audienceSize" className="block text-sm font-medium text-gray-700 mb-1">Approx. Audience Size (Followers)</label>
+              <input type="number" name="audienceSize" id="audienceSize" value={profile.audienceSize} onChange={handleChange} className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="e.g., 10000" min="0" />
             </div>
           </div>
         </section>

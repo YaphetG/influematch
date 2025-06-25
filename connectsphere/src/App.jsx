@@ -85,10 +85,9 @@ function App() {
           <Route
             path="/influencer/dashboard"
             element={
-              <InfluencerDashboardPage></InfluencerDashboardPage>
-              // <ProtectedRoute allowedRoles={['influencer']}>
-              //   <InfluencerDashboardPage />
-              // </ProtectedRoute>
+              <ProtectedRoute allowedRoles={['influencer']}>
+                <InfluencerDashboardPage />
+              </ProtectedRoute>
             }
           />
           <Route
@@ -104,7 +103,7 @@ function App() {
             element={
               <ProtectedRoute>
                 {/* No specific role, just needs login */}
-                {/* <UserProfile /> */}
+                <UserProfile />
               </ProtectedRoute>
             }
           />
@@ -144,7 +143,7 @@ function App() {
           {/* Add other routes here */}
           <Route path="*" element={<Navigate to="/" replace />} /> {/* Fallback for unknown paths */}
         </Routes>
-      </main>
+      </div>
     </>
   );
 }
